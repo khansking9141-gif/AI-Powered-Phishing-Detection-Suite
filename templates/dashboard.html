@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Dashboard | PhishGuard
+    </title>
+
+
+    <style>
+
+        /* ==================================================
+           RESET
+        ================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* ==================================================
+           BODY
+        ================================================== */
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 85% 8%,
+                    rgba(39, 84, 255, 0.18),
+                    transparent 27%
+                ),
+
+                radial-gradient(
+                    circle at 8% 88%,
+                    rgba(20, 50, 140, 0.15),
+                    transparent 30%
+                ),
+
+                #05070d;
+
+            color: #f4f1e8;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ==================================================
+           BACKGROUND GRID
+        ================================================== */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: 0.12;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(255,255,255,0.035) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.035) 1px,
+                    transparent 1px
+                );
+
+            background-size: 45px 45px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent
+                );
+
+            z-index: -1;
+        }
+
+
+        /* ==================================================
+           TOP NAVIGATION
+        ================================================== */
+
+        .topbar {
+            height: 76px;
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background:
+                rgba(5,7,13,0.82);
+
+            backdrop-filter:
+                blur(14px);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+        }
+
+
+        .brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: #f4f1e8;
+        }
+
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2454ff,
+                    #1233a5
+                );
+
+            box-shadow:
+                0 0 25px
+                rgba(36,84,255,0.35);
+
+            font-size: 19px;
+        }
+
+
+        .brand-text {
+            font-size: 20px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        .brand-text span {
+            color: #5278ff;
+        }
+
+
+        .logout-btn {
+            text-decoration: none;
+
+            color: #e9e7df;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            padding: 10px 17px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            border-radius: 10px;
+
+            transition: 0.25s;
+
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+
+        .logout-btn:hover {
+            border-color:
+                rgba(255,90,90,0.55);
+
+            background:
+                rgba(255,80,80,0.08);
+
+            transform:
+                translateY(-1px);
+        }
+        /* ==================================================
+   TOPBAR ACTIONS
+================================================== */
+
+.topbar-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* ==================================================
+   ADMIN DASHBOARD BUTTON
+================================================== */
+
+.back-dashboard-btn {
+    text-decoration: none;
+
+    color: #6687ff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    padding: 10px 17px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(36,84,255,0.08);
+
+    border:
+        1px solid
+        rgba(82,120,255,0.22);
+
+    transition: 0.25s;
+
+    white-space: nowrap;
+}
+
+
+.back-dashboard-btn:hover {
+    transform:
+        translateY(-1px);
+
+    background:
+        rgba(36,84,255,0.15);
+
+    border-color:
+        rgba(82,120,255,0.45);
+}
+
+
+        /* ==================================================
+           MAIN CONTAINER
+        ================================================== */
+
+        .dashboard-page {
+            width: min(1180px, 92%);
+
+            margin: 0 auto;
+
+            padding: 65px 0 80px;
+        }
+
+
+        /* ==================================================
+           DASHBOARD HEADER
+        ================================================== */
+
+        .dashboard-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            gap: 30px;
+
+            margin-bottom: 52px;
+        }
+
+
+        .dashboard-header-content {
+            max-width: 700px;
+        }
+
+
+        .dashboard-eyebrow {
+            display: inline-flex;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            color: #7090ff;
+
+            margin-bottom: 14px;
+        }
+
+
+        .dashboard-header h1 {
+            font-size:
+                clamp(34px, 5vw, 54px);
+
+            line-height: 1.05;
+
+            letter-spacing:
+                -1.8px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .dashboard-header h1 span {
+            color: #5278ff;
+        }
+
+
+        .dashboard-header p {
+            color: #9da4b6;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+
+            max-width: 650px;
+        }
+
+
+        /* ==================================================
+           STATUS CARD
+        ================================================== */
+
+        .dashboard-status-card {
+            min-width: 250px;
+
+            padding: 18px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(13,17,28,0.86);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+        }
+
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background:
+                #4dff9b;
+
+            box-shadow:
+                0 0 12px
+                rgba(77,255,155,0.8);
+
+            flex-shrink: 0;
+        }
+
+
+        .dashboard-status-card strong {
+            display: block;
+
+            font-size: 12px;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .dashboard-status-card span:last-child {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #727b8d;
+
+            font-size: 11px;
+        }
+
+
+        /* ==================================================
+           SECTION
+        ================================================== */
+
+        .dashboard-section {
+            margin-bottom: 45px;
+        }
+
+
+        .section-heading {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .section-heading h2 {
+            font-size: 23px;
+
+            margin-top: 5px;
+        }
+
+
+        .section-eyebrow {
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.3px;
+
+            color: #7090ff;
+        }
+
+
+        .section-line {
+            flex: 1;
+
+            height: 1px;
+
+            background:
+                rgba(255,255,255,0.07);
+        }
+
+
+        /* ==================================================
+           SCANNER GRID
+        ================================================== */
+
+        .scan-card-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        /* ==================================================
+           SCAN CARD
+        ================================================== */
+
+        .scan-card {
+            position: relative;
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-height: 310px;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(17,22,35,0.94),
+                    rgba(8,11,18,0.96)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            overflow: hidden;
+
+            transition:
+                transform 0.25s,
+                border-color 0.25s,
+                box-shadow 0.25s;
+        }
+
+
+        .scan-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            right: 0;
+
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #315cff,
+                    transparent
+                );
+
+            opacity: 0;
+
+            transition:
+                opacity 0.25s;
+        }
+
+
+        .scan-card:hover {
+            transform:
+                translateY(-6px);
+
+            border-color:
+                rgba(82,120,255,0.35);
+
+            box-shadow:
+                0 20px 45px
+                rgba(0,0,0,0.35);
+        }
+
+
+        .scan-card:hover::before {
+            opacity: 1;
+        }
+
+
+        .scan-card-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 28px;
+        }
+
+
+        .scan-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(36,84,255,0.12);
+
+            border:
+                1px solid
+                rgba(82,120,255,0.22);
+
+            font-size: 22px;
+        }
+
+
+        .scan-number {
+            color: #555f75;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        .scan-card-content h3 {
+            font-size: 20px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .scan-card-content p {
+            color: #8790a2;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .scan-card-action {
+            margin-top: auto;
+
+            padding-top: 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            color: #6687ff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+        }
+
+
+        .scan-card-action span:last-child {
+            font-size: 19px;
+
+            transition:
+                transform 0.2s;
+        }
+
+
+        .scan-card:hover
+        .scan-card-action span:last-child {
+            transform:
+                translateX(5px);
+        }
+
+
+        /* ==================================================
+           LOWER GRID
+        ================================================== */
+
+        .dashboard-lower-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 22px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .dashboard-panel {
+            padding: 27px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(13,17,28,0.86);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+        }
+
+
+        .panel-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            margin-bottom: 25px;
+        }
+
+
+        .panel-eyebrow {
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.2px;
+
+            color: #7090ff;
+        }
+
+
+        .panel-header h2 {
+            font-size: 19px;
+
+            margin-top: 7px;
+        }
+
+
+        .panel-link {
+            color: #6687ff;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .activity-placeholder,
+        .ai-panel-content {
+            display: flex;
+
+            gap: 15px;
+
+            align-items: flex-start;
+        }
+
+
+        .activity-icon,
+        .ai-glow-icon {
+            width: 45px;
+            height: 45px;
+
+            min-width: 45px;
+
+            border-radius: 13px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(36,84,255,0.11);
+
+            border:
+                1px solid
+                rgba(82,120,255,0.18);
+
+            color: #6687ff;
+
+            font-size: 19px;
+        }
+
+
+        .activity-placeholder strong,
+        .ai-panel-content strong {
+            display: block;
+
+            font-size: 14px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .activity-placeholder p,
+        .ai-panel-content p {
+            color: #7d8698;
+
+            font-size: 12px;
+
+            line-height: 1.65;
+        }
+
+
+        .ai-indicator {
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+            color: #79eeb0;
+
+            background:
+                rgba(77,255,155,0.06);
+
+            border:
+                1px solid
+                rgba(77,255,155,0.14);
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        /* ==================================================
+           SECURITY BANNER
+        ================================================== */
+
+        .dashboard-security-banner {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(36,84,255,0.12),
+                    rgba(10,14,25,0.85)
+                );
+
+            border:
+                1px solid
+                rgba(82,120,255,0.18);
+        }
+
+
+        .security-banner-icon {
+            width: 52px;
+            height: 52px;
+
+            min-width: 52px;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(36,84,255,0.18);
+
+            color: #7290ff;
+
+            font-size: 22px;
+        }
+
+
+        .security-banner-content {
+            flex: 1;
+        }
+
+
+        .security-banner-content span {
+            display: block;
+
+            color: #7290ff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .security-banner-content strong {
+            display: block;
+
+            font-size: 16px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .security-banner-content p {
+            color: #7d8698;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        .security-banner-status {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+
+            color: #79eeb0;
+
+            white-space: nowrap;
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 950px) {
+
+            .dashboard-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .scan-card-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .dashboard-lower-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .topbar {
+                padding: 0 4%;
+            }
+
+
+            .brand-text {
+                font-size: 17px;
+            }
+
+
+            .dashboard-page {
+                width: 94%;
+
+                padding-top: 40px;
+            }
+
+
+            .dashboard-header h1 {
+                letter-spacing:
+                    -1px;
+            }
+
+
+            .dashboard-security-banner {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .security-banner-status {
+                margin-top: 5px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+    <!-- ==================================================
+         TOP NAVIGATION
+    ================================================== -->
+
+    <header class="topbar">
+
+    <a 
+        href="{{ url_for('dashboard_routes.dashboard') }}" 
+        class="brand" 
+    >
+
+        <div class="brand-icon"> 
+            🛡 
+        </div>
+
+        <div class="brand-text"> 
+            Phish<span>Guard</span> 
+        </div>
+
+    </a>
+
+
+    <div class="topbar-actions">
+
+        {% if current_user.role == 'admin' %}
+
+        <a 
+            href="{{ url_for('admin_routes.admin_dashboard') }}" 
+            class="back-dashboard-btn" 
+        >
+            ← Admin Dashboard
+        </a>
+
+        {% endif %}
+
+
+        <a 
+            href="{{ url_for('auth.logout') }}" 
+            class="logout-btn" 
+        >
+            Logout →
+        </a>
+
+    </div>
+
+</header>
+
+
+    <!-- ==================================================
+         DASHBOARD
+    ================================================== -->
+
+    <main class="dashboard-page">
+
+
+        <!-- =================================================
+             DASHBOARD HEADER
+        ================================================= -->
+
+        <div class="dashboard-header">
+
+            <div class="dashboard-header-content">
+
+                <span class="dashboard-eyebrow">
+                    SECURITY CENTER
+                </span>
+
+                <h1>
+                    Welcome back,
+                    <span>{{ current_user.username }}</span>
+                </h1>
+
+                <p>
+                    Monitor your protection status and analyze
+                    potential phishing threats across multiple
+                    attack vectors.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-status-card">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        PROTECTION ACTIVE
+                    </strong>
+
+                    <span>
+                        Detection engine online
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             THREAT DETECTION
+        ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        THREAT DETECTION
+                    </span>
+
+                    <h2>
+                        Choose a scan type
+                    </h2>
+
+                </div>
+
+                <span class="section-line"></span>
+
+            </div>
+
+
+            <div class="scan-card-grid">
+
+
+                <!-- URL -->
+
+                <a
+                    href="{{ url_for('url_routes.url_scan') }}"
+                    class="scan-card"
+                >
+
+                    <div class="scan-card-top">
+
+                        <div class="scan-icon">
+                            ↗
+                        </div>
+
+                        <span class="scan-number">
+                            01
+                        </span>
+
+                    </div>
+
+
+                    <div class="scan-card-content">
+
+                        <h3>
+                            URL Scanner
+                        </h3>
+
+                        <p>
+                            Analyze website URLs and identify
+                            suspicious phishing indicators before
+                            visiting a website.
+                        </p>
+
+                    </div>
+
+
+                    <div class="scan-card-action">
+
+                        <span>
+                            SCAN WEBSITE
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- QR -->
+
+                <a
+                    href="{{ url_for('qr_routes.qr_scan') }}"
+                    class="scan-card"
+                >
+
+                    <div class="scan-card-top">
+
+                        <div class="scan-icon">
+                            ▦
+                        </div>
+
+                        <span class="scan-number">
+                            02
+                        </span>
+
+                    </div>
+
+
+                    <div class="scan-card-content">
+
+                        <h3>
+                            QR Scanner
+                        </h3>
+
+                        <p>
+                            Decode QR codes and analyze their
+                            embedded links for potential phishing
+                            threats.
+                        </p>
+
+                    </div>
+
+
+                    <div class="scan-card-action">
+
+                        <span>
+                            SCAN QR CODE
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- EMAIL -->
+
+                <a
+                    href="{{ url_for('email_routes.email_scan') }}"
+                    class="scan-card"
+                >
+
+                    <div class="scan-card-top">
+
+                        <div class="scan-icon">
+                            ✉
+                        </div>
+
+                        <span class="scan-number">
+                            03
+                        </span>
+
+                    </div>
+
+
+                    <div class="scan-card-content">
+
+                        <h3>
+                            Email Scanner
+                        </h3>
+
+                        <p>
+                            Examine email sender information,
+                            subjects and message content for
+                            phishing characteristics.
+                        </p>
+
+                    </div>
+
+
+                    <div class="scan-card-action">
+
+                        <span>
+                            ANALYZE EMAIL
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOWER DASHBOARD
+        ================================================= -->
+
+        <div class="dashboard-lower-grid">
+
+
+            <!-- SCAN HISTORY -->
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-eyebrow">
+                            ACTIVITY
+                        </span>
+
+                        <h2>
+                            Scan History
+                        </h2>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('history_routes.scan_history') }}"
+                        class="panel-link"
+                    >
+                        View all →
+                    </a>
+
+                </div>
+
+
+                <div class="activity-placeholder">
+
+                    <div class="activity-icon">
+                        ◷
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Review your security activity
+                        </strong>
+
+                        <p>
+                            View previous URL, QR code and email
+                            scans, risk scores and threat analysis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- GENERATIVE AI -->
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-eyebrow">
+                            INTELLIGENCE
+                        </span>
+
+                        <h2>
+                            Generative AI
+                        </h2>
+
+                    </div>
+
+
+                    <div class="ai-indicator">
+                        AI
+                    </div>
+
+                </div>
+
+
+                <div class="ai-panel-content">
+
+                    <div class="ai-glow-icon">
+                        ◆
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Intelligent Threat Analysis
+                        </strong>
+
+                        <p>
+                            Understand why a URL, QR code or email
+                            may be dangerous with AI-powered threat
+                            explanations and recommended actions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SECURITY BANNER
+        ================================================= -->
+
+        <div class="dashboard-security-banner">
+
+            <div class="security-banner-icon">
+                ◈
+            </div>
+
+
+            <div class="security-banner-content">
+
+                <span>
+                    PHISHGUARD SECURITY ENGINE
+                </span>
+
+                <strong>
+                    Multi-vector protection is active
+                </strong>
+
+                <p>
+                    Your scans can be analyzed across URLs,
+                    QR codes and phishing emails with
+                    Generative AI threat analysis.
+                </p>
+
+            </div>
+
+
+            <div class="security-banner-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    OPERATIONAL
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

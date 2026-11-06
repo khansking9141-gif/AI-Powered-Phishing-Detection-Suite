@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        User Scans | PhishGuard
+    </title>
+
+
+    <style>
+
+        /* ==================================================
+           RESET
+        ================================================== */
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+        /* ==================================================
+           BODY
+        ================================================== */
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+
+                radial-gradient(
+                    circle at 85% 8%,
+                    rgba(39, 84, 255, 0.18),
+                    transparent 27%
+                ),
+
+                radial-gradient(
+                    circle at 8% 88%,
+                    rgba(20, 50, 140, 0.15),
+                    transparent 30%
+                ),
+
+                #05070d;
+
+            color: #f4f1e8;
+
+            overflow-x: hidden;
+
+        }
+
+
+        /* ==================================================
+           BACKGROUND GRID
+        ================================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: 0.12;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(255,255,255,0.035) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.035) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                45px 45px;
+
+            mask-image:
+
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent
+                );
+
+            z-index: -1;
+
+        }
+
+
+        /* ==================================================
+           TOPBAR
+        ================================================== */
+
+        .topbar {
+
+            height: 76px;
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            border-bottom:
+
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background:
+
+                rgba(5,7,13,0.82);
+
+            backdrop-filter:
+
+                blur(14px);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: #f4f1e8;
+
+        }
+
+
+        .brand-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #2454ff,
+                    #1233a5
+                );
+
+            box-shadow:
+
+                0 0 25px
+                rgba(36,84,255,0.35);
+
+            font-size: 19px;
+
+        }
+
+
+        .brand-text {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+        }
+
+
+        .brand-text span {
+
+            color: #5278ff;
+
+        }
+
+
+        .topbar-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .back-btn {
+
+            text-decoration: none;
+
+            color: #6687ff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            padding: 10px 17px;
+
+            border-radius: 10px;
+
+            background:
+
+                rgba(36,84,255,0.08);
+
+            border:
+
+                1px solid
+                rgba(82,120,255,0.22);
+
+            transition: 0.25s;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .back-btn:hover {
+
+            text-decoration: none;
+
+            transform:
+                translateY(-1px);
+
+            background:
+
+                rgba(36,84,255,0.15);
+
+            border-color:
+
+                rgba(82,120,255,0.45);
+
+        }
+
+
+        /* ==================================================
+           MAIN PAGE
+        ================================================== */
+
+        .page {
+
+            width: min(1180px, 92%);
+
+            margin: 0 auto;
+
+            padding: 65px 0 80px;
+
+        }
+
+
+        /* ==================================================
+           HEADER
+        ================================================== */
+
+        .page-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            gap: 30px;
+
+            margin-bottom: 45px;
+
+        }
+
+
+        .page-header-content {
+
+            max-width: 700px;
+
+        }
+
+
+        .eyebrow {
+
+            display: inline-block;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            color: #7090ff;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .page-header h1 {
+
+            font-size:
+
+                clamp(
+                    34px,
+                    5vw,
+                    52px
+                );
+
+            line-height: 1.05;
+
+            letter-spacing:
+                -1.5px;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .page-header h1 span {
+
+            color: #5278ff;
+
+        }
+
+
+        .page-header p {
+
+            color: #9da4b6;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            max-width: 650px;
+
+        }
+
+
+        /* ==================================================
+           USER INFO CARD
+        ================================================== */
+
+        .user-info-card {
+
+            min-width: 280px;
+
+            padding: 20px;
+
+            border-radius: 16px;
+
+            background:
+
+                rgba(13,17,28,0.86);
+
+            border:
+
+                1px solid
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .user-info-label {
+
+            display: block;
+
+            color: #6f7b91;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .user-info-name {
+
+            color: #f4f1e8;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .user-info-email {
+
+            color: #8993a5;
+
+            font-size: 12px;
+
+            word-break: break-word;
+
+        }
+
+
+        /* ==================================================
+           STATISTICS
+        ================================================== */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns:
+
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 40px;
+
+        }
+
+
+        .stat-card {
+
+            min-height: 150px;
+
+            padding: 22px;
+
+            border-radius: 18px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(17,22,35,0.94),
+                    rgba(8,11,18,0.96)
+                );
+
+            border:
+
+                1px solid
+                rgba(255,255,255,0.09);
+
+            transition:
+                transform 0.25s,
+                border-color 0.25s;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+
+                rgba(82,120,255,0.35);
+
+        }
+
+
+        .stat-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            background:
+
+                rgba(36,84,255,0.11);
+
+            border:
+
+                1px solid
+                rgba(82,120,255,0.18);
+
+            color: #6687ff;
+
+            font-size: 18px;
+
+        }
+
+
+        .stat-card h3 {
+
+            color: #8d96a8;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .stat-card strong {
+
+            font-size: 28px;
+
+            color: #f4f1e8;
+
+        }
+
+
+        /* ==================================================
+           TABLE CARD
+        ================================================== */
+
+        .table-card {
+
+            padding: 27px;
+
+            border-radius: 20px;
+
+            background:
+
+                rgba(13,17,28,0.86);
+
+            border:
+
+                1px solid
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .table-header {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .table-header h2 {
+
+            font-size: 22px;
+
+            margin-top: 6px;
+
+        }
+
+
+        .table-header p {
+
+            margin-top: 8px;
+
+            color: #7d8698;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .table-wrapper {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            min-width: 850px;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th {
+
+            padding: 14px 15px;
+
+            text-align: left;
+
+            color: #7090ff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            border-bottom:
+
+                1px solid
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        td {
+
+            padding: 17px 15px;
+
+            color: #a8afbd;
+
+            font-size: 12px;
+
+            border-bottom:
+
+                1px solid
+                rgba(255,255,255,0.055);
+
+        }
+
+
+        tbody tr {
+
+            transition:
+                background 0.2s;
+
+        }
+
+
+        tbody tr:hover {
+
+            background:
+
+                rgba(36,84,255,0.045);
+
+        }
+
+
+        .scan-id {
+
+            color: #6687ff;
+
+            font-weight: 700;
+
+        }
+
+
+        .scan-input {
+
+            max-width: 300px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        /* ==================================================
+           TYPE BADGE
+        ================================================== */
+
+        .type-badge {
+
+            display: inline-flex;
+
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.7px;
+
+            color: #7d99ff;
+
+            background:
+
+                rgba(36,84,255,0.10);
+
+            border:
+
+                1px solid
+                rgba(82,120,255,0.18);
+
+        }
+
+
+        /* ==================================================
+           RISK SCORE
+        ================================================== */
+
+        .risk-score {
+
+            display: flex;
+
+            align-items: baseline;
+
+            gap: 3px;
+
+        }
+
+
+        .risk-score strong {
+
+            color: #f4f1e8;
+
+            font-size: 16px;
+
+        }
+
+
+        .risk-score span {
+
+            color: #687184;
+
+            font-size: 10px;
+
+        }
+
+
+        /* ==================================================
+           RISK LEVEL
+        ================================================== */
+
+        .risk-level {
+
+            display: inline-flex;
+
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.5px;
+
+        }
+
+
+        .safe {
+
+            color: #79eeb0;
+
+            background:
+
+                rgba(77,255,155,0.06);
+
+            border:
+
+                1px solid
+                rgba(77,255,155,0.14);
+
+        }
+
+
+        .suspicious {
+
+            color: #ffd36b;
+
+            background:
+
+                rgba(255,190,70,0.07);
+
+            border:
+
+                1px solid
+                rgba(255,190,70,0.16);
+
+        }
+
+
+        .phishing {
+
+            color: #ff8585;
+
+            background:
+
+                rgba(255,80,80,0.07);
+
+            border:
+
+                1px solid
+                rgba(255,80,80,0.16);
+
+        }
+
+
+        /* ==================================================
+           EMPTY STATE
+        ================================================== */
+
+        .empty-state {
+
+            padding: 65px 20px;
+
+            text-align: center;
+
+        }
+
+
+        .empty-icon {
+
+            width: 60px;
+
+            height: 60px;
+
+            margin: 0 auto 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 16px;
+
+            color: #6687ff;
+
+            font-size: 24px;
+
+            background:
+
+                rgba(36,84,255,0.10);
+
+            border:
+
+                1px solid
+                rgba(82,120,255,0.18);
+
+        }
+
+
+        .empty-state h3 {
+
+            color: #f4f1e8;
+
+            font-size: 18px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .empty-state p {
+
+            color: #7d8698;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 1000px) {
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .page-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+
+            .user-info-card {
+
+                width: 100%;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .topbar {
+
+                padding: 0 4%;
+
+            }
+
+
+            .brand-text {
+
+                font-size: 17px;
+
+            }
+
+
+            .page {
+
+                width: 94%;
+
+                padding-top: 40px;
+
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .table-card {
+
+                padding: 18px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================================
+         TOPBAR
+    ================================================== -->
+
+    <header class="topbar">
+
+
+        <a
+            href="{{ url_for('admin_routes.admin_dashboard') }}"
+            class="brand"
+        >
+
+            <div class="brand-icon">
+                🛡
+            </div>
+
+            <div class="brand-text">
+                Phish<span>Guard</span>
+            </div>
+
+        </a>
+
+
+        <div class="topbar-actions">
+
+            <a
+                href="{{ url_for(
+                    'admin_routes.view_user',
+                    user_id=user.id
+                ) }}"
+                class="back-btn"
+            >
+                ← User Details
+            </a>
+
+
+            <a
+                href="{{ url_for(
+                    'admin_routes.admin_dashboard'
+                ) }}"
+                class="back-btn"
+            >
+                Admin Dashboard
+            </a>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ==================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="page">
+
+
+        <!-- HEADER -->
+
+        <div class="page-header">
+
+
+            <div class="page-header-content">
+
+
+                <span class="eyebrow">
+
+                    USER SCAN HISTORY
+
+                </span>
+
+
+                <h1>
+
+                    {{ user.username }}'s
+                    <span>Security Activity</span>
+
+                </h1>
+
+
+                <p>
+
+                    Review all URL, QR code and email
+                    phishing detection scans performed
+                    by this user.
+
+                </p>
+
+
+            </div>
+
+
+
+            <!-- USER INFO -->
+
+            <div class="user-info-card">
+
+
+                <span class="user-info-label">
+
+                    SELECTED USER
+
+                </span>
+
+
+                <div class="user-info-name">
+
+                    {{ user.username }}
+
+                </div>
+
+
+                <div class="user-info-email">
+
+                    {{ user.email }}
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             STATISTICS
+        ================================================== -->
+
+        <section class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ◷
+                </div>
+
+                <h3>
+                    TOTAL SCANS
+                </h3>
+
+                <strong>
+                    {{ user_stats.total_scans }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ↗
+                </div>
+
+                <h3>
+                    URL SCANS
+                </h3>
+
+                <strong>
+                    {{ user_stats.total_url }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ▦
+                </div>
+
+                <h3>
+                    QR SCANS
+                </h3>
+
+                <strong>
+                    {{ user_stats.total_qr }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✉
+                </div>
+
+                <h3>
+                    EMAIL SCANS
+                </h3>
+
+                <strong>
+                    {{ user_stats.total_email }}
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             SCANS TABLE
+        ================================================== -->
+
+        <section class="table-card">
+
+
+            <div class="table-header">
+
+
+                <span class="eyebrow">
+
+                    SCAN RECORDS
+
+                </span>
+
+
+                <h2>
+
+                    All Scans
+
+                </h2>
+
+
+                <p>
+
+                    Complete scan history belonging to
+                    {{ user.username }}.
+
+                </p>
+
+
+            </div>
+
+
+
+            {% if scans %}
+
+
+            <div class="table-wrapper">
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                SCAN TYPE
+                            </th>
+
+                            <th>
+                                ANALYZED INPUT
+                            </th>
+
+                            <th>
+                                RISK SCORE
+                            </th>
+
+                            <th>
+                                THREAT LEVEL
+                            </th>
+
+                            <th>
+                                SCAN DATE
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for scan in scans %}
+
+                        <tr>
+
+
+                            <td class="scan-id">
+
+                                #{{ scan.id }}
+
+                            </td>
+
+
+
+                            <td>
+
+                                <span class="type-badge">
+
+                                    {{ scan.scan_type }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <td class="scan-input">
+
+                                {{ scan.input_data }}
+
+                            </td>
+
+
+
+                            <td>
+
+
+                                <div class="risk-score">
+
+                                    <strong>
+
+                                        {{ scan.risk_score }}
+
+                                    </strong>
+
+
+                                    <span>
+
+                                        /100
+
+                                    </span>
+
+                                </div>
+
+
+                            </td>
+
+
+
+                            <td>
+
+
+                                <span
+
+                                    class="risk-level
+
+                                    {% if scan.risk_level|lower == 'safe' %}
+
+                                        safe
+
+                                    {% elif scan.risk_level|lower == 'suspicious' %}
+
+                                        suspicious
+
+                                    {% elif scan.risk_level|lower == 'phishing' %}
+
+                                        phishing
+
+                                    {% endif %}
+
+                                    "
+
+                                >
+
+                                    {{ scan.risk_level }}
+
+                                </span>
+
+
+                            </td>
+
+
+
+                            <td>
+
+                                {{ scan.created_at }}
+
+                            </td>
+
+
+                        </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-state">
+
+
+                <div class="empty-icon">
+
+                    ◷
+
+                </div>
+
+
+                <h3>
+
+                    No Scans Found
+
+                </h3>
+
+
+                <p>
+
+                    This user has not performed any
+                    phishing detection scans yet.
+
+                </p>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

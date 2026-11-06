@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account | PhishGuard
+{% endblock %}
+
+
+{% block page_name %}
+Create Account
+{% endblock %}
+
+
+{% block auth_content %}
+
+
+<!-- =========================================================
+     REGISTRATION CARD HEADER
+     ========================================================= -->
+
+<div class="auth-card-header">
+
+    <span class="auth-eyebrow">
+        SECURE REGISTRATION
+    </span>
+
+    <h2>
+        Create your account
+    </h2>
+
+    <p>
+        Join PhishGuard and start protecting yourself from
+        digital threats.
+    </p>
+
+</div>
+
+
+{% if error %}
+<div class="auth-error-message">
+    <span>⚠</span>
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
+
+<!-- =========================================================
+     REGISTRATION FORM
+     ========================================================= -->
+
+<form
+    method="POST"
+    class="auth-form"
+>
+
+    <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ csrf_token() }}"
+>
+
+
+    <!-- USERNAME -->
+
+    <div class="form-group">
+
+        <label for="username">
+            USERNAME
+        </label>
+
+        <div class="input-wrapper">
+
+            <span class="input-icon">
+                ●
+            </span>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Choose a username"
+                autocomplete="username"
+                required
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- EMAIL -->
+
+    <div class="form-group">
+
+        <label for="email">
+            EMAIL ADDRESS
+        </label>
+
+        <div class="input-wrapper">
+
+            <span class="input-icon">
+                @
+            </span>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <div class="form-group">
+
+        <label for="password">
+            PASSWORD
+        </label>
+
+        <div class="input-wrapper">
+
+            <span class="input-icon">
+                ◆
+            </span>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a strong password"
+                autocomplete="new-password"
+                required
+                oninput="checkPasswordStrength(this.value)"
+            >
+
+            <button
+                type="button"
+                class="password-toggle"
+                onclick="togglePassword('password', this)"
+                aria-label="Show password"
+            >
+                👁
+            </button>
+
+        </div>
+
+
+        <!-- PASSWORD STRENGTH -->
+
+        <div class="password-strength">
+
+            <div class="password-strength-header">
+
+                <span>
+                    PASSWORD STRENGTH
+                </span>
+
+                <span
+                    id="passwordStrengthText"
+                    class="strength-text"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="strength-bar">
+
+                <div
+                    id="passwordStrengthBar"
+                    class="strength-bar-fill"
+                ></div>
+
+            </div>
+
+
+            <p
+                id="passwordStrengthHint"
+                class="password-strength-hint"
+            >
+                Use at least 8 characters with uppercase,
+                lowercase, numbers and symbols.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONFIRM PASSWORD -->
+
+    <div class="form-group">
+
+        <label for="confirm_password">
+            CONFIRM PASSWORD
+        </label>
+
+        <div class="input-wrapper">
+
+            <span class="input-icon">
+                ◆
+            </span>
+
+            <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Re-enter your password"
+                autocomplete="new-password"
+                required
+            >
+
+            <button
+                type="button"
+                class="password-toggle"
+                onclick="togglePassword('confirm_password', this)"
+                aria-label="Show password"
+            >
+                👁
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- REGISTER BUTTON -->
+
+    <button
+        type="submit"
+        class="auth-submit"
+    >
+
+        <span>
+            CREATE SECURE ACCOUNT
+        </span>
+
+        <span class="button-arrow">
+            →
+        </span>
+
+    </button>
+
+
+</form>
+
+
+<!-- =========================================================
+     LOGIN LINK
+     ========================================================= -->
+
+<div class="auth-divider">
+
+    <span>
+        ALREADY HAVE AN ACCOUNT?
+    </span>
+
+</div>
+
+
+<a
+    href="{{ url_for('auth.login') }}"
+    class="secondary-auth-button"
+>
+
+    <span>
+        Sign in to PhishGuard
+    </span>
+
+    <span>
+        →
+    </span>
+
+</a>
+
+
+<!-- =========================================================
+     SECURITY MESSAGE
+     ========================================================= -->
+
+<div class="auth-security-note">
+
+    <span>
+        ◆
+    </span>
+
+    <p>
+        Your security matters. Keep your credentials
+        private and secure.
+    </p>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   PASSWORD VISIBILITY TOGGLE
+   ========================================================= */
+
+function togglePassword(passwordId, button) {
+
+    const passwordInput =
+        document.getElementById(passwordId);
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+
+        button.textContent = "🙈";
+
+    } else {
+
+        passwordInput.type = "password";
+
+        button.textContent = "👁";
+
+    }
+
+}
+
+
+/* =========================================================
+   PASSWORD STRENGTH CHECKER
+   ========================================================= */
+
+function checkPasswordStrength(password) {
+
+    const strengthBar =
+        document.getElementById("passwordStrengthBar");
+
+    const strengthText =
+        document.getElementById("passwordStrengthText");
+
+    const strengthHint =
+        document.getElementById("passwordStrengthHint");
+
+
+    let score = 0;
+
+
+    /* Empty password */
+
+    if (password.length === 0) {
+
+        strengthBar.style.width = "0%";
+        strengthText.textContent = "—";
+        strengthHint.textContent =
+            "Use at least 8 characters with uppercase, lowercase, numbers and symbols.";
+
+        return;
+
+    }
+
+
+    /* Length */
+
+    if (password.length >= 8) {
+        score++;
+    }
+
+    if (password.length >= 12) {
+        score++;
+    }
+
+
+    /* Lowercase */
+
+    if (/[a-z]/.test(password)) {
+        score++;
+    }
+
+
+    /* Uppercase */
+
+    if (/[A-Z]/.test(password)) {
+        score++;
+    }
+
+
+    /* Number */
+
+    if (/[0-9]/.test(password)) {
+        score++;
+    }
+
+
+    /* Special character */
+
+    if (/[^A-Za-z0-9]/.test(password)) {
+        score++;
+    }
+
+
+    /* =====================================================
+       VERY WEAK
+       ===================================================== */
+
+    if (score <= 2) {
+
+        strengthBar.style.width = "25%";
+
+        strengthText.textContent = "WEAK";
+
+        strengthHint.textContent =
+            "Add more characters, numbers, uppercase letters and symbols.";
+
+        return;
+    }
+
+
+    /* =====================================================
+       MEDIUM
+       ===================================================== */
+
+    if (score <= 4) {
+
+        strengthBar.style.width = "60%";
+
+        strengthText.textContent = "MEDIUM";
+
+        strengthHint.textContent =
+            "Good start. Add more length and character variety.";
+
+        return;
+    }
+
+
+    /* =====================================================
+       STRONG
+       ===================================================== */
+
+    strengthBar.style.width = "100%";
+
+    strengthText.textContent = "STRONG";
+
+    strengthHint.textContent =
+        "Strong password. Your account is better protected.";
+
+}
+
+</script>
+
+
+{% endblock %}

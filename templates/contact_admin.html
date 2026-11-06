@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Admin | PhishGuard</title>
+
+    <style>
+
+        /* ==========================================
+           GLOBAL STYLES
+        ========================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --background: #02060b;
+            --surface: #081522;
+            --surface-light: #06111e;
+            --royal-blue: #087cff;
+            --blue-light: #168cff;
+            --cyan: #16cfff;
+            --cream: #f6f7f5;
+            --muted: #8d98a5;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(
+                135deg,
+                #02060b 0%,
+                #04101b 48%,
+                #02070d 100%
+            );
+            color: var(--cream);
+            font-family: "Segoe UI", Arial, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* ==========================================
+           BACKGROUND EFFECTS
+        ========================================== */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(
+                    rgba(255,255,255,0.018) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.018) 1px,
+                    transparent 1px
+                );
+            background-size: 45px 45px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .background-glow {
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(130px);
+            opacity: 0.16;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-one {
+            background: #087cff;
+            top: -180px;
+            left: -150px;
+        }
+
+        .glow-two {
+            background: #16cfff;
+            bottom: -200px;
+            right: -150px;
+        }
+
+
+        /* ==========================================
+           NAVIGATION BAR
+        ========================================== */
+
+        .navbar {
+            height: 85px;
+            padding: 0 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            z-index: 2;
+            background: rgba(2, 7, 13, 0.85);
+            backdrop-filter: blur(15px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .brand-icon {
+            width: 39px;
+            height: 39px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(
+                135deg,
+                #087cff,
+                #168cff
+            );
+            color: white;
+            border-radius: 11px;
+            font-size: 16px;
+            font-weight: 800;
+            box-shadow: 0 0 25px rgba(8, 124, 255, 0.35);
+        }
+
+        .brand-highlight {
+            color: #087cff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyan);
+        }
+
+        .nav-button {
+            padding: 11px 21px;
+            border: 1px solid rgba(22, 207, 255, 0.4);
+            border-radius: 8px;
+            color: var(--cyan);
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-button:hover {
+            background: var(--royal-blue);
+            border-color: var(--royal-blue);
+            color: white;
+        }
+
+
+        /* ==========================================
+           MAIN LAYOUT
+        ========================================== */
+
+        .main-container {
+            width: 84%;
+            max-width: 1250px;
+            margin: 85px auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 85px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* ==========================================
+           LEFT INFORMATION SECTION
+        ========================================== */
+
+        .info-section {
+            padding: 20px 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: rgba(8, 124, 255, 0.12);
+            border: 1px solid rgba(22, 207, 255, 0.2);
+            border-radius: 30px;
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #36d6a0;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #36d6a0;
+        }
+
+        .info-section h1 {
+            font-size: clamp(42px, 5vw, 64px);
+            line-height: 1.12;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 25px;
+            color: var(--cream);
+        }
+
+        .info-section h1 span {
+            display: block;
+            color: #087cff;
+        }
+
+        .info-description {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+            max-width: 480px;
+            margin-bottom: 45px;
+        }
+
+
+        /* ==========================================
+           SUPPORT FEATURES
+        ========================================== */
+
+        .support-features {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .feature-icon {
+            min-width: 43px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            color: var(--cyan);
+            background: rgba(8, 124, 255, 0.16);
+            border: 1px solid rgba(22, 207, 255, 0.2);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .feature-item h3 {
+            font-size: 16px;
+            margin-bottom: 7px;
+            color: var(--cream);
+        }
+
+        .feature-item p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 350px;
+        }
+
+        .security-note {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 45px;
+            color: #a7b2bd;
+            font-size: 13px;
+        }
+
+        .security-symbol {
+            color: var(--cyan);
+        }
+
+
+        /* ==========================================
+           CONTACT FORM CARD
+        ========================================== */
+
+        .form-section {
+            background: linear-gradient(
+                145deg,
+                rgba(8, 21, 34, 0.96),
+                rgba(3, 9, 17, 0.98)
+            );
+
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 42px;
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.35),
+                0 0 40px rgba(8,124,255,0.08);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(
+                90deg,
+                var(--royal-blue),
+                var(--cyan)
+            );
+        }
+
+        .form-label {
+            color: var(--cyan);
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 13px;
+        }
+
+        .form-header h2 {
+            font-size: 30px;
+            font-weight: 750;
+            margin-bottom: 12px;
+            color: var(--cream);
+        }
+
+        .form-header p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+
+        /* ==========================================
+           ALERT MESSAGES
+        ========================================== */
+
+        .message-box {
+            padding: 13px 15px;
+            border-radius: 9px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .error-message {
+            background: rgba(255, 75, 75, 0.1);
+            border: 1px solid rgba(255, 75, 75, 0.3);
+            color: #ff9292;
+        }
+
+        .success-message {
+            background: rgba(54, 214, 160, 0.1);
+            border: 1px solid rgba(54, 214, 160, 0.3);
+            color: #75e6bd;
+        }
+
+        .tracking-card {
+            margin: 18px 0 24px;
+            padding: 18px;
+            border: 1px solid rgba(22, 207, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(8, 124, 255, 0.09);
+        }
+
+        .tracking-card h3 {
+            color: var(--cyan);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .tracking-card p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .tracking-code-row {
+            display: flex;
+            gap: 9px;
+            align-items: stretch;
+        }
+
+        .tracking-code {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            background: rgba(2, 8, 15, 0.8);
+            color: var(--cream);
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+            user-select: all;
+        }
+
+        .copy-tracking-button {
+            padding: 0 14px;
+            border: 1px solid rgba(22, 207, 255, 0.4);
+            border-radius: 8px;
+            background: rgba(8, 124, 255, 0.16);
+            color: var(--cyan);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .copy-tracking-button:hover {
+            background: rgba(8, 124, 255, 0.3);
+        }
+
+        .tracking-warning {
+            margin-top: 11px;
+            color: #ffd98a;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+
+        /* ==========================================
+           CHECK REQUEST STATUS LINK
+        ========================================== */
+
+        .status-check-link {
+            margin: 18px 0 25px;
+            padding: 17px 15px;
+            text-align: center;
+            background: rgba(8, 124, 255, 0.07);
+            border: 1px solid rgba(22, 140, 255, 0.22);
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .status-check-link:hover {
+            background: rgba(8, 124, 255, 0.13);
+            border-color: rgba(22, 207, 255, 0.4);
+        }
+
+        .status-check-link p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 9px;
+        }
+
+        .status-check-link a {
+            color: var(--cyan);
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .status-check-link a:hover {
+            color: var(--cream);
+        }
+
+
+        /* ==========================================
+           FORM INPUTS
+        ========================================== */
+
+        .form-group {
+            margin-bottom: 23px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #e3ebf0;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 16px;
+            background: rgba(2, 8, 15, 0.7);
+            border: 1px solid rgba(255,255,255,0.11);
+            border-radius: 9px;
+            color: var(--cream);
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input {
+            height: 51px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+            line-height: 1.7;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #8d98a5;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(8, 124, 255, 0.15);
+        }
+
+        .input-hint {
+            color: #8d98a5;
+            font-size: 11px;
+            margin-top: 8px;
+            text-align: right;
+        }
+
+
+        /* ==========================================
+           SUBMIT BUTTON
+        ========================================== */
+
+        .submit-button {
+            width: 100%;
+            height: 54px;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(
+                110deg,
+                #087cff,
+                #168cff
+            );
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 8px 25px rgba(8,124,255,0.25);
+            transition: 0.3s;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(8,124,255,0.4);
+            background: linear-gradient(
+                110deg,
+                #168cff,
+                #16cfff
+            );
+        }
+
+        .button-arrow {
+            font-size: 20px;
+        }
+
+
+        /* ==========================================
+           FORM FOOTER
+        ========================================== */
+
+        .form-footer {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 9px;
+            margin-top: 22px;
+            color: #8d98a5;
+            font-size: 11px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .footer-dot {
+            width: 7px;
+            height: 7px;
+            min-width: 7px;
+            margin-top: 4px;
+            background: #36d6a0;
+            border-radius: 50%;
+        }
+
+
+        /* ==========================================
+           PAGE FOOTER
+        ========================================== */
+
+        .page-footer {
+            position: relative;
+            z-index: 1;
+            padding: 25px 8%;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: #8d98a5;
+            font-size: 11px;
+        }
+
+
+        /* ==========================================
+           RESPONSIVE DESIGN
+        ========================================== */
+
+        @media (max-width: 1000px) {
+            .main-container {
+                width: 88%;
+                gap: 45px;
+            }
+
+            .form-section {
+                padding: 32px;
+            }
+
+            .info-section h1 {
+                font-size: 48px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .navbar {
+                height: auto;
+                min-height: 75px;
+                padding: 18px 6%;
+                flex-wrap: wrap;
+                gap: 18px;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                gap: 25px;
+            }
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .nav-button {
+                font-size: 11px;
+                padding: 9px 13px;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                width: 88%;
+                margin: 55px auto;
+                gap: 40px;
+            }
+
+            .info-section h1 {
+                font-size: 46px;
+            }
+
+            .info-description {
+                margin-bottom: 30px;
+            }
+
+            .support-features {
+                gap: 22px;
+            }
+
+            .form-section {
+                padding: 28px 23px;
+            }
+
+            .page-footer {
+                flex-direction: column;
+                text-align: center;
+                line-height: 1.7;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .info-section h1 {
+                font-size: 38px;
+            }
+
+            .form-header h2 {
+                font-size: 25px;
+            }
+
+            .form-section {
+                padding: 25px 18px;
+            }
+
+            .tracking-code-row {
+                flex-direction: column;
+            }
+
+            .copy-tracking-button {
+                min-height: 42px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND EFFECTS -->
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+
+    <!-- NAVIGATION -->
+
+    <header class="navbar">
+
+        <a href="{{ url_for('auth.home') }}" class="brand">
+
+            <span class="brand-icon">PG</span>
+
+            <span>
+                PHISH<span class="brand-highlight">GUARD</span>
+            </span>
+
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('auth.home') }}">Home</a>
+
+            <a href="{{ url_for('auth.login') }}">Login</a>
+
+            <a href="{{ url_for('auth.register') }}">Register</a>
+
+        </nav>
+
+        <a href="{{ url_for('auth.login') }}" class="nav-button">
+            Back to Login
+        </a>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-container">
+
+
+        <!-- LEFT INFORMATION SECTION -->
+
+        <section class="info-section">
+
+            <div class="eyebrow">
+
+                <span class="status-dot"></span>
+
+                PHISHGUARD SUPPORT CENTER
+
+            </div>
+
+            <h1>
+                We're Here to
+                <span>Help You.</span>
+            </h1>
+
+            <p class="info-description">
+                Facing an account issue? Need assistance with your
+                PhishGuard account?
+
+                Submit your request directly to our administrator
+                and let us help you resolve your issue.
+            </p>
+
+            <!-- SUPPORT FEATURES -->
+
+            <div class="support-features">
+
+                <div class="feature-item">
+
+                    <div class="feature-icon">01</div>
+
+                    <div>
+                        <h3>Submit Your Request</h3>
+
+                        <p>
+                            Explain your account issue or request
+                            assistance from our administrator.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="feature-item">
+
+                    <div class="feature-icon">02</div>
+
+                    <div>
+                        <h3>Admin Review</h3>
+
+                        <p>
+                            Your request will be reviewed by
+                            the PhishGuard administrator.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="feature-item">
+
+                    <div class="feature-icon">03</div>
+
+                    <div>
+                        <h3>Receive a Decision</h3>
+
+                        <p>
+                            The administrator can accept or reject
+                            your request.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="security-note">
+
+                <span class="security-symbol">◆</span>
+
+                Your account security matters to us.
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTACT FORM -->
+
+        <section class="form-section">
+
+            <div class="form-header">
+
+                <div class="form-label">
+                    SUPPORT REQUEST
+                </div>
+
+                <h2>Contact Admin</h2>
+
+                <p>
+                    Fill in the details below to submit your request.
+                </p>
+
+            </div>
+
+
+            <!-- ERROR MESSAGE -->
+
+            {% if error %}
+
+                <div class="message-box error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- SUCCESS MESSAGE -->
+
+            {% if success %}
+
+                <div class="message-box success-message">
+                    Your request has been submitted successfully!
+                    The administrator will review your request.
+                </div>
+
+            {% endif %}
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% for category, message in messages %}
+
+                    <div class="message-box {{ 'success-message' if category == 'success' else 'error-message' }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endwith %}
+
+
+            <!-- TRACKING NUMBER -->
+
+            {% if tracking_token %}
+
+                <div class="tracking-card">
+
+                    <h3>Your Request Tracking Code</h3>
+
+                    <p>
+                        Save this code carefully. You will need it to
+                        check the status of your request.
+                    </p>
+
+                    <div class="tracking-code-row">
+
+                        <div class="tracking-code" id="trackingCode">
+                            {{ tracking_token }}
+                        </div>
+
+                        <button
+                            type="button"
+                            class="copy-tracking-button"
+                            onclick="copyTrackingCode()"
+                        >
+                            Copy Code
+                        </button>
+
+                    </div>
+
+                    <div class="tracking-warning">
+                        Important: Keep this tracking code private.
+                        Do not share it with anyone.
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- CHECK REQUEST STATUS LINK -->
+
+            <div class="status-check-link">
+
+                <p>Already submitted a request?</p>
+
+                <a href="{{ url_for('auth.request_status') }}">
+                    Check Your Request Status →
+                </a>
+
+            </div>
+
+
+            <!-- CONTACT FORM -->
+
+            <form
+                method="POST"
+                action="{{ url_for('auth.contact_admin') }}"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Registered Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your registered email"
+                        maxlength="255"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="subject">
+                        Request Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        placeholder="What do you need help with?"
+                        maxlength="255"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="message">
+                        Describe Your Issue
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="6"
+                        maxlength="5000"
+                        placeholder="Please explain your issue or request in detail..."
+                        required
+                    ></textarea>
+
+                    <div class="input-hint">
+                        Maximum 5000 characters.
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="submit-button">
+
+                    <span>Submit Request</span>
+
+                    <span class="button-arrow">→</span>
+
+                </button>
+
+            </form>
+
+
+            <div class="form-footer">
+
+                <span class="footer-dot"></span>
+
+                Your request will be sent for administrator review.
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="page-footer">
+
+        <div>
+            © 2026 PhishGuard. All Rights Reserved.
+        </div>
+
+        <div>
+            AI-Powered Multi-Vector Phishing Detection Suite
+        </div>
+
+    </footer>
+
+
+    <!-- COPY TRACKING CODE -->
+
+    <script>
+
+        function copyTrackingCode() {
+
+            const trackingElement =
+                document.getElementById("trackingCode");
+
+            if (!trackingElement) {
+                return;
+            }
+
+            const trackingCode =
+                trackingElement.innerText.trim();
+
+            if (navigator.clipboard && window.isSecureContext) {
+
+                navigator.clipboard.writeText(trackingCode)
+                    .then(function () {
+                        alert("Tracking code copied successfully!");
+                    })
+                    .catch(function () {
+                        fallbackCopy(trackingElement);
+                    });
+
+            } else {
+
+                fallbackCopy(trackingElement);
+
+            }
+
+        }
+
+
+        function fallbackCopy(element) {
+
+            const selection = window.getSelection();
+
+            const range = document.createRange();
+
+            range.selectNodeContents(element);
+
+            selection.removeAllRanges();
+
+            selection.addRange(range);
+
+            try {
+
+                document.execCommand("copy");
+
+                alert("Tracking code copied successfully!");
+
+            } catch (error) {
+
+                alert("Please select and copy the tracking code manually.");
+
+            }
+
+            selection.removeAllRanges();
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

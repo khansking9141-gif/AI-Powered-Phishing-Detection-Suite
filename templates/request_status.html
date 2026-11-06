@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Request Status | PhishGuard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(8, 124, 255, 0.13), transparent 30%),
+                radial-gradient(circle at 85% 85%, rgba(22, 207, 255, 0.08), transparent 30%),
+                #02060b;
+            color: #f6f7f5;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            width: 100%;
+            padding: 22px 8%;
+            border-bottom: 1px solid rgba(22, 140, 255, 0.18);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #f6f7f5;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #168cff;
+        }
+
+        .nav-link {
+            color: #aab6c4;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #16cfff;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 55px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 540px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading .icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 18px;
+            background: rgba(8, 124, 255, 0.13);
+            border: 1px solid rgba(22, 140, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 29px;
+        }
+
+        .heading h1 {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .heading h1 span {
+            color: #168cff;
+        }
+
+        .heading p {
+            color: #8d98a5;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #081421, #050b12);
+            border: 1px solid rgba(22, 140, 255, 0.23);
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .form-group {
+            margin-bottom: 21px;
+        }
+
+        label {
+            display: block;
+            color: #dce5ef;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 9px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 9px;
+            border: 1px solid #24394d;
+            background: #020912;
+            color: #f6f7f5;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #168cff;
+            box-shadow: 0 0 0 3px rgba(22, 140, 255, 0.12);
+        }
+
+        input::placeholder {
+            color: #657487;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(100deg, #087cff, #0864d8);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(8, 124, 255, 0.3);
+        }
+
+        .error-message {
+            background: rgba(255, 65, 65, 0.09);
+            border: 1px solid rgba(255, 85, 85, 0.3);
+            color: #ff8585;
+            padding: 13px 15px;
+            border-radius: 9px;
+            font-size: 13px;
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+
+        .result-card {
+            margin-top: 25px;
+            padding: 23px;
+            border-radius: 13px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(22, 140, 255, 0.25);
+        }
+
+        .result-title {
+            color: #f6f7f5;
+            font-size: 17px;
+            margin-bottom: 18px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            font-size: 13px;
+        }
+
+        .result-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #8d98a5;
+        }
+
+        .result-value {
+            color: #e9f1fa;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-pending {
+            color: #ffd36a;
+            background: rgba(255, 190, 50, 0.12);
+            border: 1px solid rgba(255, 190, 50, 0.3);
+        }
+
+        .status-accepted {
+            color: #63e6a3;
+            background: rgba(45, 210, 125, 0.12);
+            border: 1px solid rgba(45, 210, 125, 0.3);
+        }
+
+        .status-rejected {
+            color: #ff8585;
+            background: rgba(255, 65, 65, 0.12);
+            border: 1px solid rgba(255, 65, 65, 0.3);
+        }
+
+        .admin-response {
+            margin-top: 18px;
+            padding: 17px;
+            border-radius: 10px;
+            background: rgba(8, 124, 255, 0.08);
+            border: 1px solid rgba(22, 140, 255, 0.2);
+        }
+
+        .admin-response h3 {
+            color: #16cfff;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .admin-response p {
+            color: #c5d0dc;
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .no-response {
+            color: #8d98a5 !important;
+            font-style: italic;
+        }
+
+        .bottom-links {
+            text-align: center;
+            margin-top: 25px;
+            color: #8d98a5;
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .bottom-links a {
+            color: #16a4ff;
+            text-decoration: none;
+        }
+
+        .bottom-links a:hover {
+            color: #16cfff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #637181;
+            font-size: 12px;
+            border-top: 1px solid rgba(22, 140, 255, 0.12);
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 18px 5%;
+            }
+
+            .card {
+                padding: 23px 19px;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+
+            .result-row {
+                flex-direction: column;
+                gap: 7px;
+            }
+
+            .result-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{{ url_for('auth.login') }}" class="logo">
+            PHISH<span>GUARD</span>
+        </a>
+
+        <a href="{{ url_for('auth.login') }}" class="nav-link">
+            Back to Login →
+        </a>
+    </nav>
+
+    <main>
+        <div class="container">
+
+            <div class="heading">
+                <div class="icon">🔎</div>
+
+                <h1>Track Your <span>Request</span></h1>
+
+                <p>
+                    Enter the email address you used when submitting your
+                    Contact Admin request and your tracking code.
+                </p>
+            </div>
+
+            <div class="card">
+
+                {% if error %}
+                    <div class="error-message">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('auth.request_status') }}">
+
+                    {% if csrf_token is defined %}
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your registered email"
+                            value="{{ request.form.get('email', '') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tracking_token">Tracking Code</label>
+
+                        <input
+                            type="text"
+                            id="tracking_token"
+                            name="tracking_token"
+                            placeholder="Paste your tracking code"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Check Request Status →
+                    </button>
+
+                </form>
+
+                {% if request_record %}
+
+                    <div class="result-card">
+
+                        <h2 class="result-title">
+                            Request Details
+                        </h2>
+
+                        <div class="result-row">
+                            <span class="result-label">Subject</span>
+
+                            <span class="result-value">
+                                {{ request_record.subject }}
+                            </span>
+                        </div>
+
+                        <div class="result-row">
+                            <span class="result-label">Current Status</span>
+
+                            <span class="result-value">
+                                {% if request_record.status == 'Pending' %}
+                                    <span class="status-badge status-pending">
+                                        Pending
+                                    </span>
+                                {% elif request_record.status == 'Accepted' %}
+                                    <span class="status-badge status-accepted">
+                                        Accepted
+                                    </span>
+                                {% elif request_record.status == 'Rejected' %}
+                                    <span class="status-badge status-rejected">
+                                        Rejected
+                                    </span>
+                                {% else %}
+                                    {{ request_record.status }}
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="result-row">
+                            <span class="result-label">Submitted On</span>
+
+                            <span class="result-value">
+                                {{ request_record.created_at }}
+                            </span>
+                        </div>
+
+                        <div class="result-row">
+                            <span class="result-label">Last Updated</span>
+
+                            <span class="result-value">
+                                {{ request_record.updated_at }}
+                            </span>
+                        </div>
+
+                        <div class="admin-response">
+                            <h3>ADMIN RESPONSE</h3>
+
+                            {% if request_record.admin_response %}
+                                <p>{{ request_record.admin_response }}</p>
+                            {% else %}
+                                <p class="no-response">
+                                    No response has been added by the administrator yet.
+                                </p>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <div class="bottom-links">
+                Need to submit a new request?
+                <a href="{{ url_for('auth.contact_admin') }}">
+                    Contact Admin
+                </a>
+                <br>
+
+                <a href="{{ url_for('auth.login') }}">
+                    Return to Login
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        © 2026 PhishGuard. Secure Access. Smarter Protection.
+    </footer>
+
+</body>
+</html>

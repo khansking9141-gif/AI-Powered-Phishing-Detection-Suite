@@ -1,0 +1,2505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PhishGuard | AI Security Suite</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Segoe UI", Inter, Arial, sans-serif;
+
+            /* SAME DARK PALETTE AS LOGIN / REGISTER / DASHBOARD */
+            background:
+                radial-gradient(
+                    circle at 72% 18%,
+                    rgba(8, 124, 255, 0.18),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 15% 55%,
+                    rgba(22, 207, 255, 0.06),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #02060b 0%,
+                    #04101b 48%,
+                    #02070d 100%
+                );
+
+            color: #f6f7f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.16;
+
+            background-image:
+                linear-gradient(
+                    rgba(22, 140, 255, 0.035) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(22, 140, 255, 0.035) 1px,
+                    transparent 1px
+                );
+
+            background-size: 45px 45px;
+            z-index: -1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 50px));
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            height: 82px;
+
+            display: flex;
+            align-items: center;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.08);
+
+            background:
+                rgba(2, 6, 11, 0.88);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .nav-inner {
+            width: min(1180px, calc(100% - 50px));
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0b82ff,
+                    #0758e8
+                );
+
+            box-shadow:
+                0 0 22px rgba(8, 124, 255, 0.34),
+                inset 0 1px rgba(255, 255, 255, 0.30);
+
+            font-weight: 900;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .brand-text {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+        }
+
+        .brand-text span {
+            color: #168cff;
+        }
+
+        .brand-subtitle {
+            display: block;
+
+            font-size: 7px;
+            letter-spacing: 2px;
+
+            color: #8d98a5;
+
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.8px;
+
+            color: #aab5c8;
+
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: #16cfff;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-login {
+            padding: 10px 18px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.14);
+
+            border-radius: 9px;
+
+            color: #f6f7f5;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+
+            transition: 0.25s ease;
+        }
+
+        .nav-login:hover {
+            border-color: #168cff;
+
+            background:
+                rgba(8, 124, 255, 0.08);
+        }
+
+        .nav-register {
+            padding: 11px 19px;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #087cff,
+                    #0758e8
+                );
+
+            color: white;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            letter-spacing: 0.7px;
+
+            box-shadow:
+                0 0 20px rgba(8, 124, 255, 0.22);
+
+            transition: 0.25s ease;
+        }
+
+        .nav-register:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 0 28px rgba(22, 140, 255, 0.40);
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            min-height: calc(100vh - 82px);
+
+            display: flex;
+            align-items: center;
+
+            position: relative;
+
+            padding: 85px 0 100px;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 520px;
+            height: 520px;
+
+            right: -130px;
+            top: 80px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(8, 124, 255, 0.24),
+                    rgba(8, 124, 255, 0.06) 40%,
+                    transparent 70%
+                );
+
+            filter: blur(8px);
+
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.08fr 0.92fr;
+
+            gap: 70px;
+
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            color: #168cff;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 22px;
+        }
+
+        .eyebrow::before {
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #16cfff;
+
+            box-shadow:
+                0 0 12px #16cfff;
+        }
+
+        .hero h1 {
+            font-size:
+                clamp(48px, 6vw, 78px);
+
+            line-height: 0.98;
+
+            letter-spacing: -3.5px;
+
+            font-weight: 900;
+
+            color: #f6f7f5;
+
+            max-width: 720px;
+        }
+
+        .hero h1 span {
+            color: #168cff;
+
+            text-shadow:
+                0 0 35px
+                rgba(22, 140, 255, 0.20);
+        }
+
+        .hero-description {
+            max-width: 650px;
+
+            margin-top: 27px;
+
+            font-size: 16px;
+
+            line-height: 1.75;
+
+            color: #a7b2bd;
+        }
+
+        .hero-actions {
+            display: flex;
+
+            gap: 13px;
+
+            margin-top: 34px;
+
+            flex-wrap: wrap;
+        }
+
+        .primary-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 18px;
+
+            min-width: 170px;
+
+            padding: 15px 22px;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #087cff,
+                    #0758e8
+                );
+
+            color: white;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            letter-spacing: 0.8px;
+
+            box-shadow:
+                0 0 25px
+                rgba(8, 124, 255, 0.20);
+
+            transition: 0.25s ease;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 0 32px
+                rgba(0, 145, 255, 0.38);
+        }
+
+        .secondary-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-width: 150px;
+
+            padding: 14px 22px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.14);
+
+            border-radius: 9px;
+
+            color: #f6f7f5;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            letter-spacing: 0.8px;
+
+            transition: 0.25s ease;
+        }
+
+        .secondary-btn:hover {
+            border-color: #168cff;
+
+            color: #168cff;
+
+            background:
+                rgba(21, 159, 255, 0.06);
+        }
+
+        .hero-note {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-top: 27px;
+
+            color: #7f8ca2;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .hero-note span {
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #38e39a;
+
+            box-shadow:
+                0 0 10px
+                rgba(56, 227, 154, 0.7);
+        }
+
+
+        /* =====================================================
+           SECURITY PANEL
+        ===================================================== */
+
+        .security-panel {
+            position: relative;
+
+            min-height: 455px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.25);
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(8, 21, 34, 0.96),
+                    rgba(3, 9, 17, 0.96)
+                );
+
+            box-shadow:
+                0 35px 80px rgba(0, 0, 0, 0.42),
+                0 0 50px rgba(0, 103, 255, 0.08),
+                inset 0 1px rgba(255,255,255,0.05);
+
+            overflow: hidden;
+        }
+
+        .security-panel::before {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 50% 35%,
+                    rgba(8, 124, 255, 0.18),
+                    transparent 35%
+                );
+        }
+
+        .panel-top {
+            position: relative;
+
+            height: 58px;
+
+            padding: 0 22px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+        }
+
+        .panel-title {
+            font-size: 10px;
+
+            letter-spacing: 1.6px;
+
+            font-weight: 900;
+
+            color: #dbe8f7;
+        }
+
+        .live-status {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            font-size: 8px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            color: #38e39a;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #38e39a;
+
+            box-shadow:
+                0 0 12px #38e39a;
+        }
+
+        .panel-content {
+            position: relative;
+
+            padding: 35px 30px;
+        }
+
+        .shield {
+            width: 92px;
+            height: 92px;
+
+            margin: 4px auto 25px;
+
+            border-radius: 25px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #087cff,
+                    #075dd3
+                );
+
+            border:
+                1px solid
+                rgba(163, 221, 255, 0.48);
+
+            box-shadow:
+                0 0 40px
+                rgba(8, 124, 255, 0.36),
+                inset 0 1px
+                rgba(255,255,255,0.30);
+
+            font-size: 38px;
+        }
+
+        .panel-heading {
+            text-align: center;
+
+            font-size: 22px;
+
+            font-weight: 900;
+
+            color: #f6f7f5;
+        }
+
+        .panel-text {
+            max-width: 330px;
+
+            margin: 10px auto 25px;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            line-height: 1.65;
+
+            color: #8d98a5;
+        }
+
+        .scan-lines {
+            display: grid;
+
+            gap: 9px;
+        }
+
+        .scan-line {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 14px;
+
+            border-radius: 9px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.15);
+
+            background:
+                rgba(5, 15, 30, 0.52);
+        }
+
+        .scan-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #dbe5f3;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .scan-icon {
+            width: 24px;
+            height: 24px;
+
+            border-radius: 6px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(11, 142, 240, 0.18);
+
+            color: #16cfff;
+        }
+
+        .scan-status {
+            color: #38e39a;
+
+            font-size: 8px;
+
+            font-weight: 900;
+
+            letter-spacing: 0.8px;
+        }
+
+
+        /* =====================================================
+           COMMON SECTION
+        ===================================================== */
+
+        .section {
+            padding: 105px 0;
+        }
+
+        .section-label {
+            color: #168cff;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 12px;
+        }
+
+        .section-heading {
+            font-size:
+                clamp(32px, 4vw, 49px);
+
+            line-height: 1.08;
+
+            letter-spacing: -1.8px;
+
+            color: #f6f7f5;
+
+            font-weight: 900;
+        }
+
+        .section-description {
+            max-width: 670px;
+
+            margin-top: 17px;
+
+            color: #9ca9bd;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           ABOUT
+        ===================================================== */
+
+        .about-grid {
+            margin-top: 55px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 25px;
+        }
+
+        .about-card {
+            padding: 34px;
+
+            border-radius: 15px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.16);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(8, 21, 34, 0.96),
+                    rgba(3, 9, 17, 0.96)
+                );
+        }
+
+        .about-card h3 {
+            font-size: 19px;
+
+            margin-bottom: 14px;
+
+            color: #f6f7f5;
+        }
+
+        .about-card p {
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            color: #a7b2bd;
+        }
+
+        .about-highlight {
+            border-color:
+                rgba(22, 140, 255, 0.32);
+
+            box-shadow:
+                0 0 35px
+                rgba(8, 124, 255, 0.07);
+        }
+
+
+        /* =====================================================
+           DETECTION VECTORS
+        ===================================================== */
+
+        .vectors {
+            margin-top: 55px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+        }
+
+        .vector-card {
+            min-height: 285px;
+
+            padding: 26px;
+
+            border-radius: 15px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.17);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(8, 21, 34, 0.96),
+                    rgba(3, 9, 17, 0.96)
+                );
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: 0.3s ease;
+        }
+
+        .vector-card:hover {
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(22, 164, 255, 0.70);
+
+            box-shadow:
+                0 18px 45px
+                rgba(8, 124, 255, 0.13);
+        }
+
+        .vector-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+            height: 170px;
+
+            right: -80px;
+            bottom: -80px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0, 132, 255, 0.14),
+                    transparent 70%
+                );
+        }
+
+        .vector-number {
+            position: absolute;
+
+            top: 27px;
+            right: 27px;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            color: #8d98a5;
+        }
+
+        .vector-icon {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 13px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0b82ff,
+                    #0758e8
+                );
+
+            border:
+                1px solid
+                rgba(174, 226, 255, 0.35);
+
+            box-shadow:
+                0 0 22px
+                rgba(8, 124, 255, 0.20);
+
+            font-size: 21px;
+        }
+
+        .vector-card h3 {
+            margin-top: 27px;
+
+            color: #f5f1e8;
+
+            font-size: 18px;
+
+            font-weight: 900;
+        }
+
+        .vector-card p {
+            margin-top: 12px;
+
+            color: #a7b2bd;
+
+            font-size: 12px;
+
+            line-height: 1.75;
+        }
+
+        .vector-link {
+            position: absolute;
+
+            left: 26px;
+            bottom: 22px;
+
+            color: #16cfff;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           AI
+        ===================================================== */
+
+        .ai-section {
+            padding: 110px 0;
+        }
+
+        .ai-box {
+            position: relative;
+
+            border-radius: 19px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.20);
+
+            background:
+                radial-gradient(
+                    circle at 85% 40%,
+                    rgba(8, 124, 255, 0.15),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    rgba(8, 21, 34, 0.95),
+                    rgba(3, 9, 17, 0.98)
+                );
+
+            padding: 55px;
+
+            overflow: hidden;
+        }
+
+        .ai-box::before {
+            content: "";
+
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            right: -140px;
+            top: -190px;
+
+            border:
+                1px solid
+                rgba(29, 150, 255, 0.10);
+
+            border-radius: 50%;
+        }
+
+        .ai-box::after {
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            right: -60px;
+            top: -100px;
+
+            border:
+                1px solid
+                rgba(29, 150, 255, 0.08);
+
+            border-radius: 50%;
+        }
+
+        .ai-content {
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 670px;
+        }
+
+        .ai-content h2 {
+            font-size:
+                clamp(32px, 4vw, 47px);
+
+            line-height: 1.08;
+
+            letter-spacing: -1.5px;
+
+            font-weight: 900;
+
+            color: #f6f7f5;
+        }
+
+        .ai-content h2 span {
+            color: #168cff;
+        }
+
+        .ai-content p {
+            margin-top: 18px;
+
+            color: #a7b2bd;
+
+            line-height: 1.8;
+
+            font-size: 13px;
+        }
+
+        .ai-points {
+            margin-top: 27px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .ai-point {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #dbe5f3;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .ai-point::before {
+            content: "✓";
+
+            width: 20px;
+            height: 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(20, 160, 255, 0.15);
+
+            color: #20aaff;
+
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           WORKFLOW
+        ===================================================== */
+
+        .workflow {
+            margin-top: 55px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 0;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.15);
+
+            border-radius: 15px;
+
+            overflow: hidden;
+        }
+
+        .workflow-step {
+            min-height: 190px;
+
+            padding: 25px 20px;
+
+            border-right:
+                1px solid
+                rgba(22, 140, 255, 0.12);
+
+            background:
+                rgba(8, 21, 34, 0.72);
+
+            position: relative;
+        }
+
+        .workflow-step:last-child {
+            border-right: none;
+        }
+
+        .step-number {
+            color: #168cff;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+        }
+
+        .workflow-step h3 {
+            margin-top: 25px;
+
+            font-size: 15px;
+
+            color: #f6f7f5;
+        }
+
+        .workflow-step p {
+            margin-top: 10px;
+
+            color: #8d98a5;
+
+            font-size: 10px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =====================================================
+           BENEFITS
+        ===================================================== */
+
+        .benefits-grid {
+            margin-top: 55px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+        }
+
+        .benefit {
+            padding: 25px;
+
+            border-radius: 13px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.13);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(8, 21, 34, 0.94),
+                    rgba(3, 9, 17, 0.94)
+                );
+        }
+
+        .benefit-icon {
+            color: #16a4ff;
+
+            font-size: 20px;
+
+            margin-bottom: 17px;
+        }
+
+        .benefit h3 {
+            font-size: 14px;
+
+            color: #f4efe6;
+
+            margin-bottom: 9px;
+        }
+
+        .benefit p {
+            color: #8d98a5;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SECURITY STATEMENT
+        ===================================================== */
+
+        .security-section {
+            padding: 100px 0;
+        }
+
+        .security-inner {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 50px;
+
+            padding: 45px;
+
+            border-radius: 16px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.18);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(8, 21, 34, 0.95),
+                    rgba(3, 9, 17, 0.96)
+                );
+        }
+
+        .security-inner h2 {
+            font-size: 28px;
+
+            color: #f6f7f5;
+
+            font-weight: 900;
+        }
+
+        .security-inner p {
+            max-width: 650px;
+
+            margin-top: 12px;
+
+            color: #9caabd;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        .security-badge {
+            min-width: 185px;
+
+            padding: 18px 22px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.24);
+
+            background:
+                rgba(5, 25, 51, 0.72);
+
+            text-align: center;
+        }
+
+        .security-badge strong {
+            display: block;
+
+            color: #f6f7f5;
+
+            font-size: 11px;
+
+            letter-spacing: 0.8px;
+        }
+
+        .security-badge span {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #38e39a;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           CTA
+        ===================================================== */
+
+        .cta {
+            padding: 105px 0 120px;
+
+            text-align: center;
+        }
+
+        .cta-box {
+            position: relative;
+
+            padding: 75px 30px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid
+                rgba(22, 140, 255, 0.20);
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(8, 124, 255, 0.15),
+                    transparent 50%
+                ),
+                linear-gradient(
+                    145deg,
+                    rgba(8, 21, 34, 0.96),
+                    rgba(3, 9, 17, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .cta-box h2 {
+            font-size:
+                clamp(34px, 5vw, 57px);
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+
+            color: #f6f7f5;
+
+            font-weight: 900;
+        }
+
+        .cta-box h2 span {
+            color: #168cff;
+        }
+
+        .cta-box p {
+            max-width: 600px;
+
+            margin: 18px auto 30px;
+
+            color: #a7b2bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        .cta-actions {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+            padding: 28px 0;
+
+            background:
+                #02060b;
+        }
+
+        .footer-inner {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .footer-brand {
+            font-size: 12px;
+
+            font-weight: 900;
+
+            color: #f6f7f5;
+        }
+
+        .footer-brand span {
+            color: #168cff;
+        }
+
+        .footer-text {
+            color: #687789;
+
+            font-size: 9px;
+
+            letter-spacing: 0.5px;
+        }
+
+        .footer-status {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #687789;
+
+            font-size: 9px;
+
+            font-weight: 800;
+        }
+
+        .footer-status::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #38e39a;
+
+            box-shadow:
+                0 0 8px
+                rgba(56, 227, 154, 0.6);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+
+                gap: 55px;
+            }
+
+            .hero {
+                padding-top: 65px;
+            }
+
+            .security-panel {
+                max-width: 620px;
+            }
+
+            .vectors {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .workflow {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .workflow-step {
+                border-bottom:
+                    1px solid
+                    rgba(22, 140, 255, 0.12);
+            }
+
+            .workflow-step:nth-child(2n) {
+                border-right: none;
+            }
+
+            .benefits-grid {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .security-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .container,
+            .nav-inner {
+                width:
+                    min(
+                        100% - 30px,
+                        1180px
+                    );
+            }
+
+            .navbar {
+                height: 72px;
+            }
+
+            .brand-icon {
+                width: 38px;
+                height: 38px;
+            }
+
+            .brand-text {
+                font-size: 16px;
+            }
+
+            .nav-login {
+                display: none;
+            }
+
+            .nav-register {
+                padding: 10px 13px;
+
+                font-size: 9px;
+            }
+
+            .hero {
+                min-height: auto;
+
+                padding:
+                    70px 0 75px;
+            }
+
+            .hero h1 {
+                font-size: 46px;
+
+                letter-spacing: -2.5px;
+            }
+
+            .hero-description {
+                font-size: 13px;
+            }
+
+            .security-panel {
+                min-height: auto;
+            }
+
+            .about-grid,
+            .vectors,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-step,
+            .workflow-step:nth-child(2n) {
+                border-right: none;
+
+                border-bottom:
+                    1px solid
+                    rgba(22, 140, 255, 0.12);
+            }
+
+            .workflow-step:last-child {
+                border-bottom: none;
+            }
+
+            .ai-box {
+                padding: 32px 24px;
+            }
+
+            .ai-points {
+                grid-template-columns: 1fr;
+            }
+
+            .security-inner {
+                padding: 30px 25px;
+            }
+
+            .security-badge {
+                width: 100%;
+            }
+
+            .cta-box {
+                padding: 55px 22px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="navbar">
+        <div class="nav-inner">
+
+            <a href="{{ url_for('auth.home') }}" class="brand">
+
+                <div class="brand-icon">
+                    PG
+                </div>
+
+                <div>
+                    <div class="brand-text">
+                        PHISH<span>GUARD</span>
+                    </div>
+
+                    <span class="brand-subtitle">
+                        AI SECURITY SUITE
+                    </span>
+                </div>
+
+            </a>
+
+            <nav class="nav-links">
+                <a href="#about">ABOUT</a>
+                <a href="#detection">DETECTION</a>
+                <a href="#how-it-works">HOW IT WORKS</a>
+                <a href="#benefits">BENEFITS</a>
+            </nav>
+
+            <div class="nav-actions">
+
+                <a
+                    href="{{ url_for('auth.login') }}"
+                    class="nav-login"
+                >
+                    SIGN IN
+                </a>
+
+                <a
+                    href="{{ url_for('auth.register') }}"
+                    class="nav-register"
+                >
+                    GET STARTED →
+                </a>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="container hero-grid">
+
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+                        PHISHGUARD SECURITY
+                    </div>
+
+                    <h1>
+                        Defend against
+                        <span>digital threats.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        PhishGuard is an AI-powered multi-vector phishing
+                        detection suite designed to analyze suspicious URLs,
+                        QR codes and email communications before they become
+                        a security risk.
+                    </p>
+
+                    <div class="hero-actions">
+
+                        <a
+                            href="{{ url_for('auth.register') }}"
+                            class="primary-btn"
+                        >
+                            CREATE ACCOUNT
+                            <span>→</span>
+                        </a>
+
+                        <a
+                            href="{{ url_for('auth.login') }}"
+                            class="secondary-btn"
+                        >
+                            SIGN IN
+                        </a>
+
+                    </div>
+
+                    <div class="hero-note">
+                        <span></span>
+                        Your security comes first.
+                    </div>
+
+                </div>
+
+
+                <!-- SECURITY VISUAL -->
+
+                <div class="security-panel">
+
+                    <div class="panel-top">
+
+                        <div class="panel-title">
+                            AI SECURITY CENTER
+                        </div>
+
+                        <div class="live-status">
+
+                            <span class="live-dot"></span>
+
+                            SYSTEM SECURE
+
+                        </div>
+
+                    </div>
+
+                    <div class="panel-content">
+
+                        <div class="shield">
+                            🛡
+                        </div>
+
+                        <h2 class="panel-heading">
+                            Protection Active
+                        </h2>
+
+                        <p class="panel-text">
+                            Analyze multiple digital attack vectors
+                            through one centralized security platform.
+                        </p>
+
+                        <div class="scan-lines">
+
+                            <div class="scan-line">
+
+                                <div class="scan-left">
+
+                                    <div class="scan-icon">
+                                        ↗
+                                    </div>
+
+                                    URL THREAT ANALYSIS
+
+                                </div>
+
+                                <div class="scan-status">
+                                    READY
+                                </div>
+
+                            </div>
+
+
+                            <div class="scan-line">
+
+                                <div class="scan-left">
+
+                                    <div class="scan-icon">
+                                        ▦
+                                    </div>
+
+                                    QR CODE ANALYSIS
+
+                                </div>
+
+                                <div class="scan-status">
+                                    READY
+                                </div>
+
+                            </div>
+
+
+                            <div class="scan-line">
+
+                                <div class="scan-left">
+
+                                    <div class="scan-icon">
+                                        ✉
+                                    </div>
+
+                                    EMAIL ANALYSIS
+
+                                </div>
+
+                                <div class="scan-status">
+                                    READY
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ABOUT PHISHGUARD
+        ========================== -->
+
+        <section class="section" id="about">
+
+            <div class="container">
+
+                <div class="section-label">
+                    01 / ABOUT PHISHGUARD
+                </div>
+
+                <h2 class="section-heading">
+                    One security suite.<br>
+                    Multiple phishing vectors.
+                </h2>
+
+                <p class="section-description">
+                    Phishing attacks can arrive through websites, QR codes,
+                    emails and other digital communication channels.
+                    PhishGuard brings multiple detection capabilities into
+                    one centralized security environment.
+                </p>
+
+
+                <div class="about-grid">
+
+                    <div class="about-card about-highlight">
+
+                        <h3>
+                            What is PhishGuard?
+                        </h3>
+
+                        <p>
+                            PhishGuard is an AI-powered cybersecurity application
+                            developed to help identify and analyze potential
+                            phishing threats. The system examines suspicious
+                            digital inputs, calculates a risk level and provides
+                            security-focused analysis to help users understand
+                            the potential threat.
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-card">
+
+                        <h3>
+                            Why multi-vector detection?
+                        </h3>
+
+                        <p>
+                            Modern phishing attacks are not limited to traditional
+                            website links. Attackers can use QR codes, deceptive
+                            email messages and malicious URLs to trick users.
+                            PhishGuard provides a unified platform for analyzing
+                            these different attack vectors.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             DETECTION VECTORS
+        ========================== -->
+
+        <section class="section" id="detection">
+
+            <div class="container">
+
+                <div class="section-label">
+                    02 / THREAT DETECTION
+                </div>
+
+                <h2 class="section-heading">
+                    Analyze the threats<br>
+                    that matter.
+                </h2>
+
+                <p class="section-description">
+                    Choose a detection method and let PhishGuard examine
+                    the input for suspicious characteristics and phishing
+                    indicators.
+                </p>
+
+
+                <div class="vectors">
+
+                    <!-- URL -->
+
+                    <div class="vector-card">
+
+                        <div class="vector-number">
+                            01
+                        </div>
+
+                        <div class="vector-icon">
+                            ↗
+                        </div>
+
+                        <h3>
+                            URL Scanner
+                        </h3>
+
+                        <p>
+                            Analyze website URLs and identify suspicious
+                            characteristics associated with phishing and
+                            potentially malicious websites.
+                        </p>
+
+                        <div class="vector-link">
+                            ANALYZE URL →
+                        </div>
+
+                    </div>
+
+
+                    <!-- QR -->
+
+                    <div class="vector-card">
+
+                        <div class="vector-number">
+                            02
+                        </div>
+
+                        <div class="vector-icon">
+                            ▦
+                        </div>
+
+                        <h3>
+                            QR Scanner
+                        </h3>
+
+                        <p>
+                            Decode QR codes and examine the embedded links
+                            for indicators of potentially dangerous or
+                            deceptive destinations.
+                        </p>
+
+                        <div class="vector-link">
+                            SCAN QR CODE →
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="vector-card">
+
+                        <div class="vector-number">
+                            03
+                        </div>
+
+                        <div class="vector-icon">
+                            ✉
+                        </div>
+
+                        <h3>
+                            Email Scanner
+                        </h3>
+
+                        <p>
+                            Examine sender information, subjects and email
+                            content for characteristics commonly associated
+                            with phishing attempts.
+                        </p>
+
+                        <div class="vector-link">
+                            ANALYZE EMAIL →
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             AI ANALYSIS
+        ========================== -->
+
+        <section class="ai-section">
+
+            <div class="container">
+
+                <div class="ai-box">
+
+                    <div class="ai-content">
+
+                        <div class="section-label">
+                            03 / GENERATIVE AI
+                        </div>
+
+                        <h2>
+                            Go beyond detection with
+                            <span>AI threat analysis.</span>
+                        </h2>
+
+                        <p>
+                            Detection results tell you how risky an input may be.
+                            PhishGuard's Generative AI analysis is designed to
+                            provide a deeper explanation of the detected threat,
+                            helping users understand why a scan may be considered
+                            safe, suspicious or phishing.
+                        </p>
+
+                        <div class="ai-points">
+
+                            <div class="ai-point">
+                                Threat explanation
+                            </div>
+
+                            <div class="ai-point">
+                                Security reasoning
+                            </div>
+
+                            <div class="ai-point">
+                                Risk interpretation
+                            </div>
+
+                            <div class="ai-point">
+                                Action-oriented insight
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             HOW IT WORKS
+        ========================== -->
+
+        <section class="section" id="how-it-works">
+
+            <div class="container">
+
+                <div class="section-label">
+                    04 / WORKFLOW
+                </div>
+
+                <h2 class="section-heading">
+                    From input to<br>
+                    security insight.
+                </h2>
+
+                <p class="section-description">
+                    PhishGuard follows a simple security analysis workflow
+                    so users can submit suspicious content and receive
+                    an understandable result.
+                </p>
+
+
+                <div class="workflow">
+
+                    <div class="workflow-step">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Submit
+                        </h3>
+
+                        <p>
+                            Provide a URL, QR code or email for analysis.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-step">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Analyze
+                        </h3>
+
+                        <p>
+                            The appropriate detection engine examines
+                            the submitted input.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-step">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Detect
+                        </h3>
+
+                        <p>
+                            Security indicators are evaluated and a
+                            risk score is generated.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-step">
+
+                        <div class="step-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Explain
+                        </h3>
+
+                        <p>
+                            AI-assisted analysis helps explain the
+                            detected security characteristics.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-step">
+
+                        <div class="step-number">
+                            05
+                        </div>
+
+                        <h3>
+                            Report
+                        </h3>
+
+                        <p>
+                            Results can be stored in history and
+                            generated as security reports.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BENEFITS
+        ========================== -->
+
+        <section class="section" id="benefits">
+
+            <div class="container">
+
+                <div class="section-label">
+                    05 / PLATFORM BENEFITS
+                </div>
+
+                <h2 class="section-heading">
+                    Built for practical<br>
+                    security analysis.
+                </h2>
+
+                <p class="section-description">
+                    PhishGuard combines multiple security capabilities into
+                    one platform designed to make phishing analysis easier,
+                    more understandable and more organized.
+                </p>
+
+
+                <div class="benefits-grid">
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ◈
+                        </div>
+
+                        <h3>
+                            Multi-Vector Protection
+                        </h3>
+
+                        <p>
+                            Analyze URLs, QR codes and emails from one
+                            centralized security platform.
+                        </p>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ◉
+                        </div>
+
+                        <h3>
+                            AI-Assisted Analysis
+                        </h3>
+
+                        <p>
+                            Receive additional AI-generated insight to
+                            better understand detected threats.
+                        </p>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ◇
+                        </div>
+
+                        <h3>
+                            Risk Scoring
+                        </h3>
+
+                        <p>
+                            Detection results can be represented through
+                            a risk score and security classification.
+                        </p>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ▤
+                        </div>
+
+                        <h3>
+                            Scan History
+                        </h3>
+
+                        <p>
+                            Keep previous security analysis organized
+                            for later review.
+                        </p>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ↓
+                        </div>
+
+                        <h3>
+                            PDF Reports
+                        </h3>
+
+                        <p>
+                            Generate downloadable security reports
+                            containing scan results and analysis.
+                        </p>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ◎
+                        </div>
+
+                        <h3>
+                            Centralized Monitoring
+                        </h3>
+
+                        <p>
+                            Authorized administrators can monitor users,
+                            scans and platform activity.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SECURITY STATEMENT
+        ========================== -->
+
+        <section class="security-section">
+
+            <div class="container">
+
+                <div class="security-inner">
+
+                    <div>
+
+                        <div class="section-label">
+                            06 / SECURITY FIRST
+                        </div>
+
+                        <h2>
+                            Your security comes first.
+                        </h2>
+
+                        <p>
+                            PhishGuard is designed as a defensive security
+                            analysis tool that helps users identify potential
+                            phishing threats before interacting with suspicious
+                            digital content. Always verify important links and
+                            communications independently before taking action.
+                        </p>
+
+                    </div>
+
+                    <div class="security-badge">
+
+                        <strong>
+                            PROTECTION STATUS
+                        </strong>
+
+                        <span>
+                            ● SYSTEM READY
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FINAL CTA
+        ========================== -->
+
+        <section class="cta">
+
+            <div class="container">
+
+                <div class="cta-box">
+
+                    <div class="section-label">
+                        PHISHGUARD SECURITY
+                    </div>
+
+                    <h2>
+                        Ready to analyze<br>
+                        <span>the next threat?</span>
+                    </h2>
+
+                    <p>
+                        Create your PhishGuard account and access the
+                        security center to analyze suspicious URLs,
+                        QR codes and emails.
+                    </p>
+
+                    <div class="cta-actions">
+
+                        <a
+                            href="{{ url_for('auth.register') }}"
+                            class="primary-btn"
+                        >
+                            CREATE ACCOUNT →
+                        </a>
+
+                        <a
+                            href="{{ url_for('auth.login') }}"
+                            class="secondary-btn"
+                        >
+                            SIGN IN
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="container footer-inner">
+
+            <div class="footer-brand">
+                PHISH<span>GUARD</span>
+            </div>
+
+            <div class="footer-text">
+                AI-POWERED MULTI-VECTOR PHISHING DETECTION SUITE
+            </div>
+
+            <div class="footer-status">
+                SECURITY SYSTEM ONLINE
+            </div>
+
+        </div>
+
+        
+
+    </footer>
+
+</body>
+</html>

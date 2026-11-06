@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}
+Secure Login | PhishGuard
+{% endblock %}
+
+{% block page_name %}
+Secure Access
+{% endblock %}
+
+{% block auth_content %}
+
+<!-- LOGIN CARD HEADER -->
+
+<div class="auth-card-header">
+
+
+<span class="auth-eyebrow">
+    SECURE ACCESS
+</span>
+
+<h2>Welcome back</h2>
+
+<p>
+    Sign in to access your security dashboard.
+</p>
+
+
+</div>
+
+<!-- LOGIN ERROR MESSAGE -->
+
+{% if error %}
+
+<div class="auth-error-message">
+
+
+<span>⚠</span>
+
+<p>{{ error }}</p>
+
+
+</div>
+
+{% endif %}
+
+<!-- LOGIN FORM -->
+
+<form method="POST" class="auth-form">
+
+
+<input
+    type="hidden"
+    name="csrf_token"
+    value="{{ csrf_token() }}"
+>
+
+<!-- EMAIL -->
+
+<div class="form-group">
+
+    <label for="email">EMAIL ADDRESS</label>
+
+    <div class="input-wrapper">
+
+        <span class="input-icon">@</span>
+
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+        >
+
+    </div>
+
+</div>
+
+
+<!-- PASSWORD -->
+
+<div class="form-group">
+
+    <label for="password">PASSWORD</label>
+
+    <div class="input-wrapper">
+
+        <span class="input-icon">◆</span>
+
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button
+            type="button"
+            class="password-toggle"
+            id="togglePassword"
+            aria-label="Show password"
+        >
+            👁
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- FORGOT PASSWORD -->
+
+<div class="forgot-password-wrapper">
+
+    <a href="{{ url_for('auth.forgot_password') }}">
+        Forgot Password?
+    </a>
+
+</div>
+
+
+<!-- LOGIN BUTTON -->
+
+<button type="submit" class="auth-submit">
+
+    <span>ACCESS SECURITY CENTER</span>
+
+    <span class="button-arrow">→</span>
+
+</button>
+
+
+</form>
+
+<!-- REGISTER LINK -->
+
+<div class="auth-divider">
+    <span>NEW TO PHISHGUARD?</span>
+</div>
+
+<a
+href="{{ url_for('auth.register') }}"
+class="secondary-auth-button"
+
+>
+
+
+<span>Create a new account</span>
+
+
+
+<span>→</span>
+
+
+</a>
+
+<!-- REQUEST STATUS -->
+
+<div class="auth-divider">
+    <span>REQUEST ALREADY SUBMITTED?</span>
+</div>
+
+<a
+href="{{ url_for('auth.request_status') }}"
+class="secondary-auth-button"
+
+>
+
+
+<span>Check Request Status</span>
+
+
+
+<span>→</span>
+
+
+</a>
+
+<!-- CONTACT ADMIN -->
+
+<div class="auth-divider">
+    <span>NEED ACCOUNT ASSISTANCE?</span>
+</div>
+
+<a
+href="{{ url_for('auth.contact_admin') }}"
+class="secondary-auth-button"
+
+>
+
+
+<span>Contact Admin</span>
+
+
+
+<span>→</span>
+
+
+</a>
+
+<!-- SECURITY MESSAGE -->
+
+<div class="auth-security-note">
+
+
+<span>◆</span>
+
+<p>
+    Your security matters. Never share your login
+    credentials with anyone.
+</p>
+
+
+</div>
+
+<!-- SHOW / HIDE PASSWORD -->
+
+<script>
+
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+            togglePassword.textContent = "🙈";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            passwordInput.type = "password";
+            togglePassword.textContent = "👁";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Show password"
+            );
+
+        }
+
+    });
+
+</script>
+
+{% endblock %}
